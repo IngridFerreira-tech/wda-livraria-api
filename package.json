@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "postinstall": "npm run build",
+    "start": "node server.js",
+    "install:clean": "rm -rf node_modules/ && rm - rf package-lock.json && npm install && npm run dev"
   },
   "dependencies": {
     "@mdi/font": "5.9.55",
@@ -12,6 +15,7 @@
     "axios": "^0.23.0",
     "chart.js": "2.9",
     "core-js": "^3.6.5",
+    "express": "^4.17.1",
     "roboto-fontface": "*",
     "vue": "^2.6.11",
     "vue-apexcharts": "^1.6.2",

@@ -73,7 +73,7 @@
                                 <v-icon class="mr-1" color="primari">{{ svgPath4 }}</v-icon
                                 >Último Aluguel Cadastrado
                             </v-card-title>
-                            <v-card-text>
+                            <v-card-text v-if="ultimoAluguel != 0">
                                 <div class="flex1" v-for="(alugueis, inicio) in ultimoAluguel" :key="inicio">
                                     <h6><b class="titulo">Livro:</b> {{ alugueis.livro.nome }}</h6>
                                     <h6><b class="titulo">Usuário:</b> {{ alugueis.usuario.nome }}</h6>
@@ -83,6 +83,9 @@
                                     <h6><b class="titulo">Previsão de devolução:</b> {{ alugueis.data_previsao }}</h6>
                                 </div>
                             </v-card-text>
+                            <div v-if="alugueis == 0">
+                                <v-card-title>Sem últimos alugueis</v-card-title>
+                            </div>
                         </v-card>
                     </v-col>
                 </v-row>
@@ -97,18 +100,14 @@
                             <apexchart
                                 v-if="!loading"
                                 type="pie"
-                                width="500"
+                                width="590"
                                 :options="chartOptions"
                                 :series="series"
                             ></apexchart>
                         </div>
                     </v-card> </v-col></v-row
         ></v-container>
-        <v-footer padless>
-            <v-col class="text-center" id="footer" cols="12"
-                ><strong color="#008DC0">2021 - WDA Livraria </strong>
-            </v-col>
-        </v-footer>
+        <Footer />
     </div>
 </template>
 <script>
@@ -116,9 +115,10 @@ import { mdiBook, mdiAccountCircle, mdiBookshelf, mdiBookAccount, mdiBookPlusOut
 import Livro from '../services/inicio.js';
 import Usuario from '../services/inicio.js';
 import Alugueis from '../services/inicio.js';
-
+import Footer from '../components/Footer.vue';
 export default {
     name: 'Inicio',
+    components: { Footer },
     data: () => {
         return {
             svgPath: mdiBook,
@@ -135,14 +135,14 @@ export default {
                 chart: {
                     type: 'pie'
                 },
-                //fill: {
-                //colors: ['#008037', '#FF0000', '#008DC0']
-                //},
+
+                colors: ['#006494', '#13293D', '#009DCF'],
 
                 labels: ['Livro em aluguel', 'Entregue com atraso', 'Entregue no prazo'],
                 responsive: [
                     {
                         breakpoint: 480,
+
                         options: {
                             chart: {
                                 width: 220

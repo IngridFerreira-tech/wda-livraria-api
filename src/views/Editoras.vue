@@ -288,21 +288,30 @@ export default {
                 cancelButtonText: 'Não'
             }).then(result => {
                 if (result.isConfirmed) {
-                    Toast.fire('Editora deletada com sucesso!', '', 'success');
-
                     var del = {
                         id: this.editedItem.id,
                         nome: this.editedItem.nome,
                         cidade: this.editedItem.cidade
                     };
-                    Editora.deletar(del).then(resposta => {
-                        if (resposta != null) {
-                            this.listar();
-                        }
-                        if (result.isCancel) {
-                            this.close();
-                        }
-                    });
+                    Editora.deletar(del)
+                        .then(resposta => {
+                            Toast.fire('Editora deletada com sucesso!', '', 'success');
+                            if (resposta != null) {
+                                this.listar();
+                            }
+                            if (result.isCancel) {
+                                this.close();
+                            }
+                        })
+                        .catch(resposta => {
+                            var erro = resposta.response.data.error;
+                            this.$swal({
+                                icon: 'error',
+                                text: erro,
+                                confirmButtonColor: '#008DC0',
+                                confirmButtonText: 'Ok'
+                            });
+                        });
                 }
             });
         },

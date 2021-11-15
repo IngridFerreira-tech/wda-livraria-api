@@ -335,8 +335,6 @@ export default {
                 cancelButtonText: 'Não'
             }).then(result => {
                 if (result.isConfirmed) {
-                    Toast.fire('Usuário deletado com sucesso!', '', 'success');
-
                     var del = {
                         id: this.editedItem.id,
                         nome: this.editedItem.nome,
@@ -344,14 +342,25 @@ export default {
                         cidade: this.editedItem.cidade,
                         email: this.editedItem.email
                     };
-                    Usuario.deletar(del).then(resposta => {
-                        if (resposta != null) {
-                            this.listar();
-                        }
-                        if (result.isCancel) {
-                            this.close();
-                        }
-                    });
+                    Usuario.deletar(del)
+                        .then(resposta => {
+                            Toast.fire('Usuário deletado com sucesso!', '', 'success');
+                            if (resposta != null) {
+                                this.listar();
+                            }
+                            if (result.isCancel) {
+                                this.close();
+                            }
+                        })
+                        .catch(resposta => {
+                            var erro = resposta.response.data.error;
+                            this.$swal({
+                                icon: 'error',
+                                text: erro,
+                                confirmButtonColor: '#008DC0',
+                                confirmButtonText: 'Ok'
+                            });
+                        });
                 }
             });
         },

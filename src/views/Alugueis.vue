@@ -81,7 +81,7 @@
                                                     <v-select
                                                         v-model="editedItem.livro"
                                                         :rules="livroRules"
-                                                        :items="livros"
+                                                        :items="disponiveis"
                                                         item-text="nome"
                                                         item-value="id"
                                                         prepend-icon="mdi-book"
@@ -244,15 +244,7 @@
                     </v-chip>
 
                     <v-chip
-                        v-else-if="item.data_devolucao.valueOf() < item.data_previsao.valueOf()"
-                        color="#008DC0"
-                        dark
-                    >
-                        Entregue no prazo
-                    </v-chip>
-
-                    <v-chip
-                        v-else-if="item.data_devolucao.valueOf() == item.data_previsao.valueOf()"
+                        v-else-if="item.data_devolucao.valueOf() <= item.data_previsao.valueOf()"
                         color="#008DC0"
                         dark
                     >
@@ -291,17 +283,13 @@
                 </template>
             </v-data-table>
         </div>
-        <!--<v-footer padless>
-            <v-col style="flex: 1" class="text-center" id="footer" cols="12"
-                ><strong color="#008DC0">2021 - WDA Livraria </strong>
-            </v-col>
-        </v-footer> -->
     </div>
 </template>
 <script>
 import Livro from '../services/livros.js';
 import Usuario from '../services/usuario.js';
 import Alugueis from '../services/alugueis.js';
+
 import { mdiBook, mdiAccountCircle, mdiBookshelf, mdiBookAccount, mdiBookPlusOutline, mdiHome } from '@mdi/js';
 export default {
     name: 'Alugueis',
@@ -345,6 +333,7 @@ export default {
             data_devolucao: ''
         },
         alugueis: [],
+        disponiveis: [],
 
         livro: {
             id: '',
@@ -491,6 +480,7 @@ export default {
         this.listar();
         this.listarLivro();
         this.listarUsuario();
+        this.listarLivrosDisponiveis();
     },
 
     methods: {
@@ -570,6 +560,11 @@ export default {
             });
         },
 
+        listarLivrosDisponiveis() {
+            Livro.disponiveis().then(resposta => {
+                this.disponiveis = resposta.data;
+            });
+        },
         editItem(item) {
             this.editedIndex = this.alugueis.indexOf(item);
             this.editedItem = Object.assign({}, item);
@@ -673,13 +668,23 @@ export default {
                     Toast.fire('A data de previsão não pode ser anterior a data do aluguel', '', 'error');
                     this.listar();
                 } else {
-                    Alugueis.salvar(save).then(resposta => {
-                        if (resposta != null) {
+                    Alugueis.salvar(save)
+                        .then(resposta => {
                             Toast.fire('Aluguel cadastrado com sucesso!', '', 'success');
-                            this.listar();
-                            this.close();
-                        }
-                    });
+                            if (resposta != null) {
+                                this.listar();
+                                this.close();
+                            }
+                        })
+                        .catch(resposta => {
+                            var erro = resposta.response.data.error;
+                            this.$swal({
+                                icon: 'error',
+                                text: erro,
+                                confirmButtonColor: '#008DC0',
+                                confirmButtonText: 'Ok'
+                            });
+                        });
                 }
             }
             this.$refs.form.validate();

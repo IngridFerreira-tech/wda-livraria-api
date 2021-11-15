@@ -7,6 +7,10 @@ export default{
         return http.get('livros')
     },
 
+    disponiveis:() => {
+        return http.get('disponiveis')
+    },
+
     salvar:(livro) => {
         return http.post('livro',livro)
     },

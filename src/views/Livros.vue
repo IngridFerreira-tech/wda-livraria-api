@@ -198,6 +198,15 @@
                     </v-toolbar>
                 </template>
 
+                <template v-slot:[`item.quantidade`]="{ item }">
+                    <v-chip v-if="item.quantidade == 0">
+                        Indisponível
+                    </v-chip>
+                    <div v-else>
+                        {{ item.quantidade }}
+                    </div>
+                </template>
+
                 <template v-slot:[`item.actions`]="{ item }">
                     <v-icon color="accent" class="mr-2" @click="editItem(item)">
                         mdi-pencil
