@@ -84,7 +84,10 @@
                                 </div>
                             </v-card-text>
                             <div v-if="alugueis == 0">
-                                <v-card-title>Sem últimos alugueis</v-card-title>
+                                <v-card-title>Aluguéis não encontrados</v-card-title>
+                            </div>
+                            <div v-if="livros == 0">
+                                <v-card-title>Livros não encontrados</v-card-title>
                             </div>
                         </v-card>
                     </v-col>
