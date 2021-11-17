@@ -654,6 +654,7 @@ export default {
                             Toast.fire('Aluguel editado com sucesso!', '', 'success');
                             this.listar();
                             this.close();
+                            this.listarLivrosDisponiveis();
                         }
                     });
                 }
@@ -674,6 +675,7 @@ export default {
                             if (resposta != null) {
                                 this.listar();
                                 this.close();
+                                this.listarLivrosDisponiveis();
                             }
                         })
                         .catch(resposta => {

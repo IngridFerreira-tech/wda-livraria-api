@@ -61,6 +61,9 @@
                                     <h6><b class="titulo">Lançamento:</b> {{ livro.lancamento }}</h6>
                                 </div>
                             </v-card-text>
+                            <div v-if="livros == 0">
+                                <v-card-title>Livros não encontrados</v-card-title>
+                            </div>
                         </v-card>
                     </v-col>
                 </v-row>
@@ -85,9 +88,6 @@
                             </v-card-text>
                             <div v-if="alugueis == 0">
                                 <v-card-title>Aluguéis não encontrados</v-card-title>
-                            </div>
-                            <div v-if="livros == 0">
-                                <v-card-title>Livros não encontrados</v-card-title>
                             </div>
                         </v-card>
                     </v-col>
@@ -208,7 +208,8 @@ export default {
             data_devolucao: '',
             ultimoLivro: [],
             ultimoAluguel: [],
-            alugueis: []
+            alugueis: [],
+            livros: []
         };
     },
 

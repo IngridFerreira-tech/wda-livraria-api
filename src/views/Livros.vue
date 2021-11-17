@@ -344,6 +344,20 @@ export default {
     },
 
     methods: {
+        atualizarModal() {
+            this.editedItem = {
+                id: 0,
+                nome: null,
+                editora: {
+                    id: '',
+                    nome: null,
+                    cidade: ''
+                },
+                autor: '',
+                lancamento: '',
+                quantidade: ''
+            };
+        },
         validacaoAnoLancamento() {
             var data = new Date();
             var anoo = data.getFullYear();
@@ -365,6 +379,7 @@ export default {
         openDialog() {
             this.dialog = true;
             this.editedIndex = -1;
+            this.atualizarModal();
         },
 
         validate() {
