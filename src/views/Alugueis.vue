@@ -156,7 +156,7 @@
                                                         <template v-slot:activator="{ on, attrs }">
                                                             <v-text-field
                                                                 v-model="editedItem.data_previsao"
-                                                                :rules="[rules.required, rules.dataPrevisaoRules]"
+                                                                :rules="dataRules"
                                                                 label="Previsão de devolução"
                                                                 persistent-hint
                                                                 prepend-icon="mdi-calendar"
@@ -669,24 +669,14 @@ export default {
                     Toast.fire('A data de previsão não pode ser anterior a data do aluguel', '', 'error');
                     this.listar();
                 } else {
-                    Alugueis.salvar(save)
-                        .then(resposta => {
-                            Toast.fire('Aluguel cadastrado com sucesso!', '', 'success');
-                            if (resposta != null) {
-                                this.listar();
-                                this.close();
-                                this.listarLivrosDisponiveis();
-                            }
-                        })
-                        .catch(resposta => {
-                            var erro = resposta.response.data.error;
-                            this.$swal({
-                                icon: 'error',
-                                text: erro,
-                                confirmButtonColor: '#008DC0',
-                                confirmButtonText: 'Ok'
-                            });
-                        });
+                    Alugueis.salvar(save).then(resposta => {
+                        Toast.fire('Aluguel cadastrado com sucesso!', '', 'success');
+                        if (resposta != null) {
+                            this.listar();
+                            this.close();
+                            this.listarLivrosDisponiveis();
+                        }
+                    });
                 }
             }
             this.$refs.form.validate();
