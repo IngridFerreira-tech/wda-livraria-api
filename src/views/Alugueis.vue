@@ -62,7 +62,7 @@
                         ></v-text-field>
 
                         <v-spacer></v-spacer>
-                        <v-btn color="primari" class="mb-2 md-5" @click="openDialog" style="color: #008DC0"
+                        <v-btn color="primari" class="mb-2 md-5" @click="open" style="color: #008DC0"
                             ><v-icon>{{ svgPath5 }}</v-icon>
                             Novo Aluguel
                         </v-btn>
@@ -512,6 +512,13 @@ export default {
             };
         },
         openDialog() {
+            this.dialog = true;
+            this.editedIndex = -1;
+            this.atualizarModal();
+            this.resetValidation();
+            this.reset();
+        },
+        open() {
             this.dialog = true;
             this.editedIndex = -1;
             this.atualizarModal();
