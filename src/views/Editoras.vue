@@ -224,9 +224,18 @@ export default {
     },
 
     methods: {
+        atualizarModal() {
+            this.editedItem = {
+                id: 0,
+                nome: '',
+                cidade: ''
+            };
+        },
         openDialog() {
             this.dialog = true;
             this.editedIndex = -1;
+            this.atualizarModal();
+            this.resetValidation();
         },
 
         validate() {

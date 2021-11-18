@@ -484,6 +484,39 @@ export default {
     },
 
     methods: {
+        atualizarModal() {
+            this.editedItem = {
+                id: 0,
+                livro: {
+                    id: '',
+                    nome: '',
+                    editora: {
+                        id: '',
+                        nome: '',
+                        cidade: ''
+                    },
+                    autor: '',
+                    lancamento: '',
+                    quantidade: ''
+                },
+                usuario: {
+                    id: '',
+                    nome: '',
+                    endereco: '',
+                    cidade: '',
+                    email: ''
+                },
+                data_aluguel: '',
+                data_previsao: '',
+                data_devolucao: ''
+            };
+        },
+        openDialog() {
+            this.dialog = true;
+            this.editedIndex = -1;
+            this.atualizarModal();
+            this.resetValidation();
+        },
         formatDate(date) {
             if (!date) return null;
 
@@ -525,11 +558,8 @@ export default {
         openDialog() {
             this.dialog = true;
             this.editedIndex = -1;
-        },
-
-        openDialog() {
-            this.dialog = true;
-            this.editedIndex = -1;
+            this.resetValidation();
+            this.atualizarModal();
         },
 
         validate() {

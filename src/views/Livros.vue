@@ -347,16 +347,22 @@ export default {
         atualizarModal() {
             this.editedItem = {
                 id: 0,
-                nome: null,
+                nome: '',
                 editora: {
                     id: '',
-                    nome: null,
+                    nome: '',
                     cidade: ''
                 },
                 autor: '',
                 lancamento: '',
                 quantidade: ''
             };
+        },
+        openDialog() {
+            this.dialog = true;
+            this.editedIndex = -1;
+            this.atualizarModal();
+            this.resetValidation();
         },
         validacaoAnoLancamento() {
             var data = new Date();
@@ -375,11 +381,6 @@ export default {
 
             const [month, day, year] = date.split('/');
             return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-        },
-        openDialog() {
-            this.dialog = true;
-            this.editedIndex = -1;
-            this.atualizarModal();
         },
 
         validate() {
@@ -435,6 +436,7 @@ export default {
             this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem);
                 this.editedIndex = -1;
+                this.resetValidation();
             });
         },
 
