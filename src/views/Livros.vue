@@ -266,7 +266,7 @@ export default {
             v => (v && v.length >= 3) || 'Deve ter mais de 3 caracteres'
         ],
         quantRules: [v => !!v || 'Este campo é obrigatório', v => (v && !isNaN(v)) || 'Informe um número válido'],
-        editoraRules: [v => (v && v.nome != null) || 'Selecione uma editora'],
+        editoraRules: [v => (v && v.nome != 0) || 'Selecione uma editora'],
         dataRules: [v => !!v || 'Este campo é obrigatório'],
 
         search: '',
@@ -307,7 +307,7 @@ export default {
             nome: null,
             editora: {
                 id: '',
-                nome: null,
+                nome: 0,
                 cidade: ''
             },
             autor: '',

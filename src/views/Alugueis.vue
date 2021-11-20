@@ -359,12 +359,9 @@ export default {
         data_devolucao: '',
 
         dataRules: [v => !!v || 'Este campo é obrigatório'],
-        livroRules: [v => (v && v.nome != null) || 'Selecione um livro'],
-        usuarioRules: [v => (v && v.nome != null) || 'Selecione um usuário'],
-        rules: {
-            required: v => !!v || 'Este campo é obrigatório.',
-            dataPrevisaoRules: v => v >= this.editedItem.data_aluguel || 'Não Pode'
-        },
+        livroRules: [v => (v && v.nome != 0) || 'Selecione um livro'],
+        usuarioRules: [v => (v && v.nome != 0) || 'Selecione um usuário'],
+        selectRules: [v => (v && v.nome != null) || 'Selecione uma opção'],
         search: '',
         headers: [
             { text: 'ID', value: 'id' },
@@ -416,7 +413,7 @@ export default {
             id: 0,
             livro: {
                 id: '',
-                nome: null,
+                nome: 0,
                 editora: {
                     id: '',
                     nome: '',
@@ -428,7 +425,7 @@ export default {
             },
             usuario: {
                 id: '',
-                nome: null,
+                nome: 0,
                 endereco: '',
                 cidade: '',
                 email: ''
