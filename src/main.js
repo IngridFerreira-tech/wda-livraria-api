@@ -23,7 +23,7 @@ Vue.component('apexchart', VueApexCharts)
 const Toast = Swal.mixin({
   toast: true,
   position: 'top-end',
-  timer: 3000,
+  timer: 1900,
   timerProgressBar: true,
   showConfirmButton: false
 });

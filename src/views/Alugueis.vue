@@ -134,6 +134,7 @@
                                                                 </template>
                                                                 <v-date-picker
                                                                     :max="nowDate"
+                                                                    :min="nowDate"
                                                                     v-model="date"
                                                                     no-title
                                                                     @input="menu1 = false"
@@ -168,6 +169,7 @@
                                                         </template>
                                                         <v-date-picker
                                                             v-model="date2"
+                                                            :min="nowDate"
                                                             no-title
                                                             @input="menu2 = false"
                                                         ></v-date-picker>
@@ -200,6 +202,8 @@
                                                         </template>
                                                         <v-date-picker
                                                             v-model="date3"
+                                                            :max="nowDate"
+                                                            :min="nowDate"
                                                             no-title
                                                             @input="menu3 = false"
                                                         ></v-date-picker>
@@ -240,7 +244,7 @@
 
                 <template v-slot:[`item.status`]="{ item }">
                     <v-chip v-if="item.data_devolucao == null" color="accent">
-                        Livro em aluguel
+                        {{ (item.status = 'Livro em aluguel') }}
                     </v-chip>
 
                     <v-chip
@@ -248,16 +252,16 @@
                         color="#008DC0"
                         dark
                     >
-                        Entregue no prazo
+                        {{ (item.status = 'Entregue no prazo') }}
                     </v-chip>
 
                     <v-chip v-else color="red" dark>
-                        Entregue com atraso
+                        {{ (item.status = 'Entregue com atraso') }}
                     </v-chip>
                 </template>
                 <template v-slot:[`item.data_devolucao`]="{ item }">
                     <div outlined v-if="item.data_devolucao == null">
-                        Não Devolvido
+                        {{ (item.status = 'Não Devolvido') }}
                     </div>
                     <div v-else>
                         {{ item.data_devolucao }}
@@ -272,13 +276,13 @@
                         </template>
                         <span>Devolver</span>
                     </v-tooltip>
-                    <v-tooltip v-else top color="error">
+                    <v-tooltip v-if="item.data_devolucao == null" top color="error">
                         <template v-slot:activator="{ on, attrs }">
                             <v-icon color="error" class="mr-2" @click="deleteItem(item)" v-bind="attrs" v-on="on">
-                                mdi-delete
+                                mdi-close-box
                             </v-icon>
                         </template>
-                        <span>Deletar</span>
+                        <span>Cancelar</span>
                     </v-tooltip>
                 </template>
             </v-data-table>
@@ -290,7 +294,15 @@ import Livro from '../services/livros.js';
 import Usuario from '../services/usuario.js';
 import Alugueis from '../services/alugueis.js';
 
-import { mdiBook, mdiAccountCircle, mdiBookshelf, mdiBookAccount, mdiBookPlusOutline, mdiHome } from '@mdi/js';
+import {
+    mdiBook,
+    mdiAccountCircle,
+    mdiBookshelf,
+    mdiBookAccount,
+    mdiBookPlusOutline,
+    mdiHome,
+    mdiCloseBox
+} from '@mdi/js';
 export default {
     name: 'Alugueis',
 
@@ -370,7 +382,7 @@ export default {
             { text: 'Aluguel', value: 'data_aluguel' },
             { text: 'Previsão', value: 'data_previsao' },
             { text: 'Devolução', value: 'data_devolucao' },
-            { text: 'Status', value: 'status', sortable: false },
+            { text: 'Status', value: 'status' },
             { text: 'Ações', value: 'actions', sortable: false }
         ],
 
@@ -380,6 +392,7 @@ export default {
         svgPath4: mdiBookAccount,
         svgPath5: mdiBookPlusOutline,
         svgPath6: mdiHome,
+        svgPath7: mdiCloseBox,
 
         desserts: [],
         editedIndex: -1,
@@ -638,7 +651,7 @@ export default {
             this.editedItem = Object.assign({}, item);
 
             this.$swal({
-                title: 'Você tem certeza que deseja deletar este aluguel?',
+                title: 'Você tem certeza que deseja cancelar este aluguel?',
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#008DC0',
