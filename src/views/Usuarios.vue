@@ -92,7 +92,7 @@
                                                 <v-col cols="12">
                                                     <v-text-field
                                                         v-model="editedItem.endereco"
-                                                        :rules="nameRules"
+                                                        :rules="enderecoRules"
                                                         :counter="50"
                                                         prepend-icon="mdi-map-marker-radius"
                                                         label="Endereço do Usuário*"
@@ -198,12 +198,25 @@ export default {
         endereco: '',
         cidade: '',
         email: '',
+        enderecoRules: [
+            v => !!v || 'Este campo é obrigatório',
+            v => (v && v.length <= 50) || 'Deve ter menos de 50 caracteres',
+            v => (v && v.length >= 3) || 'Deve ter mais de 3 caracteres',
+            v => /^[^-\s]/.test(v) || 'Informe um nome sem espaçamentos no início'
+        ],
         nameRules: [
             v => !!v || 'Este campo é obrigatório',
             v => (v && v.length <= 50) || 'Deve ter menos de 50 caracteres',
-            v => (v && v.length >= 3) || 'Deve ter mais de 3 caracteres'
+            v => (v && v.length >= 3) || 'Deve ter mais de 3 caracteres',
+            v => /[a-zA-ZÀ-ú]+$/.test(v) || 'Nome inválido!',
+            v => /^[a-zA-ZÀ-ú ]+$/.test(v) || 'Nome inválido!',
+            v => /^[^-\s]/.test(v) || 'Informe um nome sem espaçamentos no início'
         ],
-        emailRules: [v => !!v || 'Este campo é obrigatório', v => /.+@.+/.test(v) || 'E-mail deve ser válido'],
+        emailRules: [
+            v => !!v || 'Este campo é obrigatório',
+            v => /.+@.+/.test(v) || 'E-mail deve ser válido',
+            v => /^[^-\s]/.test(v) || 'Informe um nome sem espaçamentos no início'
+        ],
         search: '',
         headers: [
             { text: 'ID', value: 'id' },

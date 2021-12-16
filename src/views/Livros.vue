@@ -131,9 +131,10 @@
                                                                 <template v-slot:activator="{ on, attrs }">
                                                                     <v-text-field
                                                                         v-model="editedItem.lancamento"
-                                                                        label="Data de lançamento"
+                                                                        label="Data de lançamento*"
                                                                         persistent-hint
                                                                         prepend-icon="mdi-calendar"
+                                                                        readonly
                                                                         v-bind="attrs"
                                                                         @blur="date = parseDate(dateFormatted)"
                                                                         v-on="on"
@@ -142,7 +143,7 @@
                                                                     ></v-text-field>
                                                                 </template>
                                                                 <v-date-picker
-                                                                    :max="nowDate"
+                                                                    :max="data_atual"
                                                                     v-model="date"
                                                                     no-title
                                                                     @input="menu1 = false"
@@ -159,9 +160,22 @@
                                                         prepend-icon="mdi-numeric"
                                                         label="Quantidade*"
                                                         type="number"
-                                                        onkeypress="return event.charCode > 48"
                                                         min="1"
                                                         required
+                                                        v-if="editedIndex == -1"
+                                                    ></v-text-field>
+                                                </v-col>
+
+                                                <v-col cols="12">
+                                                    <v-text-field
+                                                        v-model="editedItem.quantidade"
+                                                        :rules="quantidadeEditRules"
+                                                        prepend-icon="mdi-numeric"
+                                                        label="Quantidade*"
+                                                        type="number"
+                                                        onkeypress="return event.charCode > 48"
+                                                        min="0"
+                                                        v-if="editedIndex != -1"
                                                     ></v-text-field>
                                                 </v-col>
                                             </v-row>
@@ -234,6 +248,7 @@ export default {
 
         date: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
         nowDate: new Date().toISOString().slice(0, 10),
+        data_atual: '',
         menu1: false,
         menu2: false,
 
@@ -263,9 +278,16 @@ export default {
         nameRules: [
             v => !!v || 'Este campo é obrigatório',
             v => (v && v.length <= 50) || 'Deve ter menos de 50 caracteres',
-            v => (v && v.length >= 3) || 'Deve ter mais de 3 caracteres'
+            v => (v && v.length >= 3) || 'Deve ter mais de 3 caracteres',
+            v => /[a-zA-ZÀ-ú]+$/.test(v) || 'Nome inválido',
+            v => /^[a-zA-ZÀ-ú ]+$/.test(v) || 'Nome inválido',
+            v => /^[^-\s]/.test(v) || 'Informe um nome sem espaçamentos no início'
         ],
-        quantRules: [v => !!v || 'Este campo é obrigatório', v => (v && !isNaN(v)) || 'Informe um número válido'],
+        quantRules: [
+            v => !!v || 'Este campo é obrigatório',
+            v => (v && !isNaN(v)) || 'Informe um número válido',
+            v => (v && v >= 1) || 'A quantidade não pode ser menor que 1 '
+        ],
         editoraRules: [v => (v && v.nome != 0) || 'Selecione uma editora'],
         dataRules: [v => !!v || 'Este campo é obrigatório'],
 
@@ -341,9 +363,19 @@ export default {
         this.listar();
         this.listarEditora();
         this.validacaoAnoLancamento();
+        this.dataAtualCalendario();
     },
 
     methods: {
+        dataAtualCalendario() {
+            var data = new Date();
+            var dia = String(data.getDate()).padStart(2, '0');
+            var mes = String(data.getMonth() + 1).padStart(2, '0');
+            var ano = data.getFullYear();
+            var data_atual = ano + '-' + mes + '-' + dia;
+            this.data_atual = data_atual;
+            console.log(data_atual);
+        },
         atualizarModal() {
             this.editedItem = {
                 id: 0,

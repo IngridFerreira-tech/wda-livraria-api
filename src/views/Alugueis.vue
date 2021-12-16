@@ -123,9 +123,10 @@
                                                                     <v-text-field
                                                                         v-model="editedItem.data_aluguel"
                                                                         :rules="dataRules"
-                                                                        label="Data do Aluguel"
+                                                                        label="Data do Aluguel*"
                                                                         persistent-hint
                                                                         prepend-icon="mdi-calendar"
+                                                                        readonly
                                                                         v-bind="attrs"
                                                                         @blur="date = parseDate(dateFormatted)"
                                                                         v-on="on"
@@ -133,8 +134,8 @@
                                                                     ></v-text-field>
                                                                 </template>
                                                                 <v-date-picker
-                                                                    :max="nowDate"
-                                                                    :min="nowDate"
+                                                                    :max="data_atual"
+                                                                    :min="data_atual"
                                                                     v-model="date"
                                                                     no-title
                                                                     @input="menu1 = false"
@@ -158,9 +159,10 @@
                                                             <v-text-field
                                                                 v-model="editedItem.data_previsao"
                                                                 :rules="dataRules"
-                                                                label="Previsão de devolução"
+                                                                label="Previsão de devolução*"
                                                                 persistent-hint
                                                                 prepend-icon="mdi-calendar"
+                                                                readonly
                                                                 v-bind="attrs"
                                                                 @blur="date2 = parseDate(dateFormatted)"
                                                                 v-on="on"
@@ -169,7 +171,7 @@
                                                         </template>
                                                         <v-date-picker
                                                             v-model="date2"
-                                                            :min="nowDate"
+                                                            :min="data_atual"
                                                             no-title
                                                             @input="menu2 = false"
                                                         ></v-date-picker>
@@ -191,9 +193,10 @@
                                                             <v-text-field
                                                                 v-model="editedItem.data_devolucao"
                                                                 :rules="dataRules"
-                                                                label="Data da devolução"
+                                                                label="Data da devolução*"
                                                                 persistent-hint
                                                                 prepend-icon="mdi-calendar"
+                                                                readonly
                                                                 v-bind="attrs"
                                                                 @blur="date3 = parseDate(dateFormatted)"
                                                                 v-on="on"
@@ -202,8 +205,8 @@
                                                         </template>
                                                         <v-date-picker
                                                             v-model="date3"
-                                                            :max="nowDate"
-                                                            :min="nowDate"
+                                                            :max="data_atual"
+                                                            :min="data_atual"
                                                             no-title
                                                             @input="menu3 = false"
                                                         ></v-date-picker>
@@ -315,6 +318,7 @@ export default {
         date2: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
         date3: new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().substr(0, 10),
         nowDate: new Date().toISOString().slice(0, 10),
+        data_atual: '',
         menu1: false,
         menu2: false,
         menu3: false,
@@ -491,9 +495,19 @@ export default {
         this.listarLivro();
         this.listarUsuario();
         this.listarLivrosDisponiveis();
+        this.dataAtualCalendario();
     },
 
     methods: {
+        dataAtualCalendario() {
+            var data = new Date();
+            var dia = String(data.getDate()).padStart(2, '0');
+            var mes = String(data.getMonth() + 1).padStart(2, '0');
+            var ano = data.getFullYear();
+            var data_atual = ano + '-' + mes + '-' + dia;
+            this.data_atual = data_atual;
+            console.log(data_atual);
+        },
         atualizarModal() {
             this.editedItem = {
                 id: 0,

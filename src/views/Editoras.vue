@@ -167,7 +167,10 @@ export default {
         nameRules: [
             v => !!v || 'Este campo é obrigatório',
             v => (v && v.length <= 50) || 'Deve ter menos de 50 caracteres',
-            v => (v && v.length >= 3) || 'Deve ter mais de 3 caracteres'
+            v => (v && v.length >= 3) || 'Deve ter mais de 3 caracteres',
+            v => /[a-zA-ZÀ-ú]+$/.test(v) || 'Nome inválido!',
+            v => /^[a-zA-ZÀ-ú ]+$/.test(v) || 'Nome inválido!',
+            v => /^[^-\s]/.test(v) || 'Informe um nome sem espaçamentos no início'
         ],
         search: '',
         headers: [
